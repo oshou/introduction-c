@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+static void do_head(FILE *f, long nlines);
+
+int main(int argc, char *argv[])
+{
+    // Exception handling(arguments not defined)
+    if (argc != 2){
+        fprintf(stderr, "Usage: %s n\n", argv[0]);
+    }
+    do_head(stdin, atol(argv[1]));
+    exit(0);
+}
+
+static void do_head(FILE *f, long nlines)
+{
+    int c;
+    if (nlines <= 0) return;
+    while ((c = getc(f)) != EOF){
+        if (putchar(c) < 0) exit(1);
+        // line count ==  '\n' count
+        if (c == '\n'){
+            nlines--;
+            if (nlines == 0) return;
+        }
+    }
+}
