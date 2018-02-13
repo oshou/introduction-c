@@ -8,23 +8,30 @@ int main(int argc, char *argv[])
 {
     pid_t pid;
 
+    // arg1: program path
+    // arg2: program argument
     if (argc != 3){
         fprintf(stderr, "Usage: %s <command> <arg>\n", argv[0]);
         exit(1);
     }
+
     pid = fork();
+
+    // error exception : fork(2) failed
     if (pid < 0){
         fprintf(stderr, "fork(2) failed\n");
         exit(1);
     }
+
+    // child process
     if (pid == 0){
         execl(argv[1], argv[1], argv[2], NULL);
         perror(argv[1]);
         exit(99);
-    }
+    }()
+    // parent process
     else {
         int status;
-
         waitpid(pid, &status, 0);
         printf("child (PID=%d) finished; ",pid);
         if (WIFEXITED(status))
